@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="se_order_generator" type="example_order_generator_server.py" name="example_order_action_server" output="screen"/>
+</launch>

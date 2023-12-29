@@ -1,0 +1,34 @@
+<launch>
+  <!--Arguments-->
+  <arg name="file_path" default="$(find se_order_generator)/json"/>
+  <arg name="file_name" default="order"                          />
+  <!--10 seconds is the default max time. Make sure to always change the time in your launch file-->
+  <arg name="max_time"            default="10"  /> 
+  <arg name="max_time_minutes"    default="0"   />
+  <arg name="max_time_seconds"    default="10"  />
+  <!--Box dimensions-->
+  <arg name="height_large_boxes"  default="15"  />
+  <arg name="width_large_boxes"   default="5"   />
+  <arg name="length_large_boxes"  default="5"   />
+  <arg name="height_small_boxes"  default="10"  />
+  <arg name="width_small_boxes"   default="5"   />
+  <arg name="length_small_boxes"  default="5"   />
+
+  <!--Parameters-->
+  <param name="file_path"         value="$(arg file_path)"    type="str"/> <!--file path for .json file-->
+  <param name="file_name"         value="$(arg file_name)"    type="str"/> <!--json file name used to read or write order-->
+  <!--The next parameters define the maximum amount of time that an order should take-->
+  <param name="max_time"            value="$(arg max_time)"             type="string"/> <!--in seconds-->
+  <param name="max_time_minutes"    value="$(arg max_time_minutes)"     type="int"   />
+  <param name="max_time_seconds"    value="$(arg max_time_seconds)"     type="int"   />
+  <!--Box dimensions-->
+  <param name="height_large_boxes"  value="$(arg height_large_boxes)"   type="double"/>
+  <param name="width_large_boxes"   value="$(arg width_large_boxes)"    type="double"/>
+  <param name="length_large_boxes"  value="$(arg length_large_boxes)"   type="double"/>
+  <param name="height_small_boxes"  value="$(arg height_small_boxes)"   type="double"/>
+  <param name="width_small_boxes"   value="$(arg width_small_boxes)"    type="double"/>
+  <param name="length_small_boxes"  value="$(arg length_small_boxes)"   type="double"/>
+
+  <!--Start node-->
+  <node pkg="se_order_generator" type="order_generator_client.py" name="order_action_client" output="screen"/>
+</launch>

@@ -1,0 +1,34 @@
+[
+    {
+        "large_red": 2,
+        "large_blue": 0,
+        "large_green": 0,
+        "small_red": 1,
+        "small_blue": 0,
+        "small_green": 3
+    },
+    {
+        "large_red": 0,
+        "large_blue": 1,
+        "large_green": 3,
+        "small_red": 0,
+        "small_blue": 2,
+        "small_green": 0
+    },
+    {
+        "large_red": 1,
+        "large_blue": 0,
+        "large_green": 2,
+        "small_red": 1,
+        "small_blue": 1,
+        "small_green": 1
+    },
+    {
+        "large_red": 3,
+        "large_blue": 0,
+        "large_green": 3,
+        "small_red": 0,
+        "small_blue": 0,
+        "small_green": 0
+    }
+]
