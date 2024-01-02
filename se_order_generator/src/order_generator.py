@@ -233,32 +233,54 @@ class OrderGen:
     # type: function
     # description: Function that writes into a json file             
     #-----------------------------------------------------------------------------------------------------#
-    def write_to_json(self,max_num_orders):
-                #Create list for dictionaries
-                dictionaries = []
+    def write_to_json(self, max_num_orders):
+        # Create list for dictionaries
+        orders = []
 
-                #Create dictionaries for json-File
-                for k in range(max_num_orders):
-                    order = {
-                    "large_red"               : self.BRB[k]  ,
-                    "large_blue"              : self.BBB[k]  ,
-                    "large_green"             : self.BGB[k]  ,
-                    "small_red"             : self.SRB[k]  ,
-                    "small_blue"            : self.SBB[k]  ,
-                    "small_green"           : self.SGB[k]  
-                    }
-                    dictionaries.append(order)
-                
+        # Create dictionaries for json-File
+        for k in range(max_num_orders):
+            # Initialize lists for boxes
+            large_boxes = [("large_red", self.BRB[k]), ("large_blue", self.BBB[k]), ("large_green", self.BGB[k])]
+            small_boxes = [("small_red", self.SRB[k]), ("small_blue", self.SBB[k]), ("small_green", self.SGB[k])]
 
-                #Create list from dictionary
+            # Split orders into sub-orders based on box constraints
+            while any(box[1] > 0 for box in large_boxes + small_boxes):
+                sub_order = {"large_red": 0, "large_blue": 0, "large_green": 0,
+                             "small_red": 0, "small_blue": 0, "small_green": 0}
 
+                # Check for 2 small boxes + 1 big box combination
+                if sum(box[1] for box in small_boxes) >= 2 and sum(box[1] for box in large_boxes) >= 1:
+                    # Add one large box
+                    for color, count in large_boxes:
+                        if count > 0:
+                            sub_order[color] = 1
+                            large_boxes[large_boxes.index((color, count))] = (color, count - 1)
+                            break
 
-                #Serializing json
-                json_object = json.dumps(dictionaries, indent=4)
+                    # Add two small boxes
+                    small_boxes_added = 0
+                    for color, count in small_boxes:
+                        while count > 0 and small_boxes_added < 2:
+                            sub_order[color] += 1
+                            count -= 1
+                            small_boxes[small_boxes.index((color, count + 1))] = (color, count)
+                            small_boxes_added += 1
 
-                #Writing to file_name.json
-                #print("Type name of file to be created: ")
-                #self.file_name = self.file_path + "/" + input() + ".json"
+                # Otherwise, use up to 3 small boxes
+                else:
+                    small_boxes_added = 0
+                    for color, count in small_boxes:
+                        while count > 0 and small_boxes_added < 3:
+                            sub_order[color] += 1
+                            count -= 1
+                            small_boxes[small_boxes.index((color, count + 1))] = (color, count)
+                            small_boxes_added += 1
 
-                with open(self.file_name, "w") as outfile:
-                    outfile.write(json_object)
+                orders.append(sub_order)
+
+        # Serializing json
+        json_object = json.dumps(orders, indent=4)
+
+        # Writing to file_name.json
+        with open(self.file_name, "w") as outfile:
+            outfile.write(json_object)
